@@ -31,12 +31,12 @@ class User(db.Model):
         """
         Point logic for each task where 1 hour = 1 point and the priority (1–10) adds a small bonus
         """
-        hours = task.duration.total_seconds() / 3600
+        hours = (task.duration.total_seconds() / 3600) if task.duration else 0
         base_points = hours
-        priority_bonus = task.priority / 5
+        priority_bonus = (task.priority or 0) / 5
         total_points = int(base_points + priority_bonus)
-
         return max(total_points, 1)
+
 
 
     def complete_task(self, task):
@@ -44,7 +44,7 @@ class User(db.Model):
         Awards points when a task is completed with no double cointing
         """
         #no double count
-        if task.completed:
+        if task.completed is True:
             return
 
         points_earned = self.calculate_task_points(task)
