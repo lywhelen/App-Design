@@ -1,6 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Interval
 from datetime import timedelta
+from datetime import datetime
+from sqlalchemy import Column, DateTime
 
 db = SQLAlchemy()
 
@@ -62,6 +64,7 @@ class User(db.Model):
                 self.points += 5
         else:
             self.streak = 0
+    #maybe +1 if completed int eh same day (no points if not completed in teh same day), but if compelted during time itnerval thats wehn we do +1 to streak, else reset streak
                 
     def serialize(self, include_tasks=True):
         """
@@ -97,7 +100,8 @@ class Task(db.Model):
     priority=db.Column(db.Integer, nullable=True) #scale from 1 to 10
     duration=db.Column(Interval)
     user_id=db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    completed = db.Column(db.Boolean, default=False) 
+    completed = db.Column(db.Boolean, default=False)
+    date_started=db.Column(DateTime, default=datetime.now)
 
     def __init__(self, **kwargs):
         self.title = kwargs.get("title", "")
@@ -105,6 +109,8 @@ class Task(db.Model):
         self.priority = kwargs.get("priority", 1)
         self.duration = kwargs.get("duration", timedelta(hours=0, minutes=30))
         self.user_id = kwargs.get("user_id")
+        self.completed=False
+        self.date_started=datetime.now
         
 
 
@@ -118,9 +124,15 @@ class Task(db.Model):
             "description": self.description,
             "priority": self.priority,
             "duration": self.duration,
-            "user_id": self.user_id
+            "user_id": self.user_id,
+            "completed": self.completed,
+            "date_started": self.date_started
         }
         return body
+    
+    def update_task_completed(self, task):
+        "user can update task complete sttaus from false to tru when they finish a  task"
+
 
 
 
