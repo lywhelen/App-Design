@@ -2,6 +2,8 @@ from db import db
 from flask import Flask
 from flask import request
 import json
+from db import Task, User
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 db_filename = "game.db"
@@ -21,7 +23,30 @@ def success_response(data, code=200):
 def failure_response(message, code=404):
     return json.dumps({"success": False, "error": message}), code
 
-#@app.route("/")
+@app.route("/tasks/")
+def completed_task(task_id):
+    """
+    chanegs task completed status and awards points appropriately 
+    """
+    user=User.query.all().first()
+    task=Task.query.filter_buy(id=task_id).first()
+    if task is None:
+        return failure_response("task not found!")
+    datetime_completed=datetime.now()
+    datetime_started=task.date_started
+    interval_end=datetime_started+task.duration
+    if datetime_completed.date()==datetime_started.date():
+        user.points=user.points+1
+        if datetime_completed.time()>= datetime_started.time() and datetime_completed.time()<=interval_end:
+            user.streak=user.streak+1
+        else:
+            user.streak=0
+    return success_response(task.serialize())
+
+
+
+#add a task, be sure to 
+
 
 
 

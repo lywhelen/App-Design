@@ -64,8 +64,8 @@ class User(db.Model):
                 self.points += 5
         else:
             self.streak = 0
-    #maybe +1 if completed int eh same day (no points if not completed in teh same day), but if compelted during time itnerval thats wehn we do +1 to streak, else reset streak
-                
+    
+
     def serialize(self, include_tasks=True):
         """
         Serialize a user object
