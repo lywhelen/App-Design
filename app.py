@@ -23,7 +23,7 @@ def success_response(data, code=200):
 def failure_response(message, code=404):
     return json.dumps({"success": False, "error": message}), code
 
-@app.route("/tasks/")
+@app.route("/tasks/<int:task_id>")
 def completed_task(task_id):
     """
     chanegs task completed status and awards points appropriately 
