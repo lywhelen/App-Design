@@ -20,6 +20,7 @@ with app.app_context():
 def success_response(data, code=200):
     return json.dumps({"success": True, "data": data}), code
 
+
 def failure_response(message, code=404):
     return json.dumps({"success": False, "error": message}), code
 
@@ -129,7 +130,7 @@ def completed_task(task_id):
         return failure_response("user not found")
 
     user.complete_task(task)
-    user.update_streak(True)
+    user.update_streak()
 
     db.session.commit()
     return success_response(task.serialize())
