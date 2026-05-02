@@ -19,6 +19,7 @@ with app.app_context():
 def success_response(data, code=200):
     return json.dumps({"success": True, "data": data}), code
 
+
 def failure_response(message, code=404):
     return json.dumps({"success": False, "error": message}), code
 
@@ -96,32 +97,26 @@ def get_tasks(user_id):
     return success_response([task.serialize() for task in user.tasks])
 
 
-
-@app.route("/tasks/<int:task_id>")
+@app.route("/api/tasks/<int:task_id>/complete/", methods=["PUT"])
 def completed_task(task_id):
     """
     changes task completed status and awards points appropriately 
     """
-    task = Task.query.filter_by(id=task_id).first()   # FIX: was filter_buy (typo)
+    task = Task.query.filter_by(id=task_id).first()
     if task is None:
         return failure_response("task not found")
 
     if task.completed:
         return failure_response("task is already completed", 400)
 
-    user = User.query.filter_by(id=task.user_id).first()  # FIX: was User.query.all().first()
+    user = User.query.filter_by(id=task.user_id).first()
     if user is None:
         return failure_response("user not found")
 
-    datetime_completed=datetime.now()
-    datetime_started=task.date_started
-    interval_end=datetime_started+task.duration
-    if datetime_completed.date()==datetime_started.date():
-        user.points=user.points+1
-        if datetime_completed.time()>= datetime_started.time() and datetime_completed.time()<=interval_end:
-            user.streak=user.streak+1
-        else:
-            user.streak=0
+    user.complete_task(task)
+    user.update_streak(True)
+
+    db.session.commit()
     return success_response(task.serialize())
 
 
