@@ -30,6 +30,11 @@ def failure_response(message, code=404):
 def create_user():
     """
     Create a new user. Currently using name and email.
+    Request body example:
+    {
+        "name": "Jonathan Chu",
+        "email": "jchu78006@gmail.com"
+    }
     """
     body = json.loads(request.data)
     name = body.get("name")
@@ -61,7 +66,13 @@ def get_user(user_id):
 def create_task(user_id):
     """
     Create a task for a user.
-
+    Request body example:
+    {
+        "title": "make pancakes",
+        "duration_minutes": 67,
+        "description": "make batter and then fry up some pancakes",
+        "priority": 2
+    }
     """
     user = User.query.filter_by(id=user_id).first()
     if user is None:
@@ -114,7 +125,7 @@ def completed_task(task_id):
         return failure_response("user not found")
 
     user.complete_task(task)
-    user.update_streak(True)
+    user.update_streak()
 
     db.session.commit()
     return success_response(task.serialize())
