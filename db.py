@@ -128,11 +128,10 @@ class Task(db.Model):
             "title": self.title,
             "description": self.description,
             "priority": self.priority,
-            #made edits on duration
-            "duration_seconds": int(self.duration.total_seconds()) if self.duration else 0,
+            "duration_minutes": int(self.duration.total_seconds() / 60) if self.duration else None,
             "user_id": self.user_id,
             "completed": self.completed,
-            "date_started": self.date_started.isoformat() if self.date_started else None,
+            "date_started": self.date_started.isoformat() if self.date_started else None
         }
 
 '''
