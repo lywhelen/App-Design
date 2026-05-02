@@ -1,0 +1,195 @@
+{
+  "info": {
+    "_postman_id": "090e09c0-b52c-4e32-8a17-8d86b6b6a20a",
+    "name": "final_project",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53257765",
+    "_collection_link": "https://go.postman.co/collection/53257765-090e09c0-b52c-4e32-8a17-8d86b6b6a20a?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "create_user",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Jonathan Chu\",\r\n    \"email\": \"jchu78006@gmail.com\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://34.48.44.154/api/users/",
+          "protocol": "http",
+          "host": [
+            "34",
+            "48",
+            "44",
+            "154"
+          ],
+          "path": [
+            "api",
+            "users",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get_user",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://34.48.44.154/api/users/1/",
+          "protocol": "http",
+          "host": [
+            "34",
+            "48",
+            "44",
+            "154"
+          ],
+          "path": [
+            "api",
+            "users",
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create_task",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"title\": \"make pancakes\",\r\n    \"duration_minutes\": 67,\r\n    \"description\": \"make batter and then fry up some pancakes\",\r\n    \"priority\": 2\r\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/users/1/tasks/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "users",
+            "1",
+            "tasks",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get_tasks",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/users/1/tasks/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "users",
+            "1",
+            "tasks",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "completed_tasks",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://34.48.44.154/api/tasks/1/complete/",
+          "protocol": "http",
+          "host": [
+            "34",
+            "48",
+            "44",
+            "154"
+          ],
+          "path": [
+            "api",
+            "tasks",
+            "1",
+            "complete",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete_task",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/tasks/1/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "tasks",
+            "1",
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
