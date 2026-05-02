@@ -80,14 +80,15 @@ def get_current_user():
 def create_task(user_id):
     """
     Create a task for a user.
+    Body: { "title": str, "description": str (opt),
+            "priority": int 1-5 (opt), "duration_minutes": int (opt, default 30) }
     Request body example:
     {
         "title": "make pancakes",
         "duration_minutes": 67,
         "description": "make batter and then fry up some pancakes",
         "priority": 2
-    }    Body: { "title": str, "description": str (opt),
-            "priority": int 1-5 (opt), "duration_minutes": int (opt, default 30) }
+    }
     """
     user = User.query.filter_by(id=user_id).first()
     if user is None:
