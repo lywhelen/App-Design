@@ -1,5 +1,5 @@
 from flask import Flask, request
-from datetime import timedelta
+from datetime import timedelta, datetime
 from db import db, User, Task
 import json
 
@@ -15,7 +15,8 @@ with app.app_context():
     db.create_all()
 
 
-# Response helpers 
+# ── Response helpers ───────────────────────────────────────────────────────────
+
 def success_response(data, code=200):
     return json.dumps({"success": True, "data": data}), code
 
@@ -24,7 +25,7 @@ def failure_response(message, code=404):
     return json.dumps({"success": False, "error": message}), code
 
 
-# ── Users ───
+# ── Users ──────────────────────────────────────────────────────────────────────
 
 @app.route("/api/users/", methods=["POST"])
 def create_user():
@@ -60,7 +61,20 @@ def get_user(user_id):
     return success_response(user.serialize())
 
 
-# ── Tasks ──
+@app.route("/api/user/", methods=["GET"])
+def get_current_user():
+    """
+    Single-user convenience endpoint — returns the one user in the database.
+    The frontend calls this on launch instead of tracking a user ID.
+    If no user exists yet, returns 404 so the frontend knows to show setup.
+    """
+    user = User.query.first()
+    if user is None:
+        return failure_response("no user found — create one first")
+    return success_response(user.serialize())
+
+
+# ── Tasks ──────────────────────────────────────────────────────────────────────
 
 @app.route("/api/users/<int:user_id>/tasks/", methods=["POST"])
 def create_task(user_id):
@@ -72,7 +86,8 @@ def create_task(user_id):
         "duration_minutes": 67,
         "description": "make batter and then fry up some pancakes",
         "priority": 2
-    }
+    }    Body: { "title": str, "description": str (opt),
+            "priority": int 1-5 (opt), "duration_minutes": int (opt, default 30) }
     """
     user = User.query.filter_by(id=user_id).first()
     if user is None:
@@ -106,6 +121,7 @@ def get_tasks(user_id):
     if user is None:
         return failure_response("user not found")
     return success_response([task.serialize() for task in user.tasks])
+
 
 
 @app.route("/api/tasks/<int:task_id>/complete/", methods=["PUT"])
@@ -143,8 +159,6 @@ def delete_task(task_id):
     db.session.commit()
     return success_response(task.serialize())
 
-
-# ── Run ────────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)
